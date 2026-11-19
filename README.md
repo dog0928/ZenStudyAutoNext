@@ -8,12 +8,22 @@ ZEN Studyの授業動画を再生終了時に自動で次に進めてくれま�
 
 ## GitHub Releases の開発用ビルド
 
-[Releases](https://github.com/dog0928/ZenStudyAutoNext/releases) の自動ビルドには、Developer ID を使わない2種類のZIPがあります。
+[Releases](https://github.com/dog0928/ZenStudyAutoNext/releases) では、Developer ID を使わない開発用ビルドを公開しています。新しいビルドでは3種類の配布物を生成します。
 
-- `ZenStudy-Auto-Next-extension-macos-arm64.zip`: macOSホストアプリ（Safari拡張を内包）
+- `ZenStudy-Auto-Next-extension-macos-arm64.dmg`: **推奨**。macOSアプリとApplicationsへのショートカットを含むディスクイメージ
+- `ZenStudy-Auto-Next-extension-macos-arm64.zip`: macOSアプリのZIP版（代替手段）
 - `ZenStudyAutoNext-Safari-Temporary-Extension.zip`: Safariの開発者設定から直接読み込むWeb拡張リソース
 
-### macOS アプリから有効化する
+### DMGからmacOSアプリをインストールする
+
+1. Releaseから `.dmg` をダウンロードして開きます。
+2. `ZenStudy-Auto-Next-extension.app` を `Applications` にドラッグします。
+3. Safariの「設定 → 詳細」でWebデベロッパ向け機能を表示し、「デベロッパ → 未署名の機能拡張を許可」をオンにします。
+4. Applicationsからアプリを一度起動し、Safariの「設定 → 機能拡張」で有効にします。
+
+**注意:** DMG化はAppleの署名・公証の代替ではありません。Gatekeeperにより起動を拒否されたり、Safariに拡張が表示されない場合があります。DMGを作るだけではSafariの拡張登録問題は解決しません。
+
+### ZIPからmacOSアプリを有効化する
 
 1. アプリのZIPを展開し、`ZenStudy-Auto-Next-extension.app` を `/Applications` に移します。
 2. Safariの「設定 → 詳細」でWebデベロッパ向け機能を表示し、「デベロッパ → 未署名の機能拡張を許可」をオンにします。
