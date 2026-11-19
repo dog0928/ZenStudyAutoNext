@@ -1,0 +1,82 @@
+:root {
+  color-scheme: light dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+}
+
+body {
+  margin: 0;
+  min-width: 300px;
+}
+
+main {
+  padding: 16px;
+}
+
+h1 {
+  font-size: 16px;
+  margin: 0 0 18px;
+}
+
+form {
+  display: grid;
+  gap: 10px;
+}
+
+label,
+summary {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.toggle-row,
+.number-row {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type="number"] {
+  width: 76px;
+}
+
+input[type="text"] {
+  box-sizing: border-box;
+  margin-top: 8px;
+  width: 100%;
+}
+
+input,
+button {
+  border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+  border-radius: 7px;
+  font: inherit;
+  padding: 7px 9px;
+}
+
+button {
+  background: #1769e0;
+  border: 0;
+  color: white;
+  cursor: pointer;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+details {
+  border-top: 1px solid color-mix(in srgb, currentColor 15%, transparent);
+  margin-top: 4px;
+  padding-top: 10px;
+}
+
+.help,
+#status {
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 4px 0 0;
+  opacity: 0.72;
+}
+
+#status {
+  min-height: 17px;
+  text-align: center;
+}

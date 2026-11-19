@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ZEN Study Auto Next</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main>
+      <h1>ZEN Study Auto Next</h1>
+      <form id="settings-form">
+        <label class="toggle-row">
+          <span>自動で次へ進む</span>
+          <input id="enabled" name="enabled" type="checkbox">
+        </label>
+
+        <label for="delay-seconds">動画終了後の待ち時間</label>
+        <div class="number-row">
+          <input id="delay-seconds" name="delaySeconds" type="number" min="0" max="10" step="0.5">
+          <span>秒</span>
+        </div>
+
+        <details>
+          <summary>詳細設定</summary>
+          <label for="custom-selector">「次へ」ボタンの CSS セレクタ</label>
+          <input id="custom-selector" name="customSelector" type="text" placeholder="例: [data-testid='next']">
+          <p class="help">通常は空欄で使えます。指定時は左の動画一覧の自動判定より優先されます。</p>
+        </details>
+
+        <button type="submit">保存</button>
+        <p id="status" role="status" aria-live="polite"></p>
+      </form>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
