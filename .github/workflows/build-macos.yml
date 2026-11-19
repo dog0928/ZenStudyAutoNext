@@ -59,49 +59,48 @@ jobs:
           path: dist/ZenStudy-Auto-Next-extension-macos-arm64.zip
           if-no-files-found: error
           retention-days: 7
+  release:
+      name: Publish GitHub Release
+      needs: build
+      if: >-
+        github.ref == 'refs/heads/main' &&
+        (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+      runs-on: ubuntu-latest
+      timeout-minutes: 10
+      permissions:
+        contents: write
 
-release:
-    name: Publish GitHub Release
-    needs: build
-    if: >-
-      github.ref == 'refs/heads/main' &&
-      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
+      steps:
+        - name: Download successful macOS build
+          uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+          with:
+            name: ZenStudyAutoNext-macOS
+            path: dist
 
-    steps:
-      - name: Download successful macOS build
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
-        with:
-          name: ZenStudyAutoNext-macOS
-          path: dist
+        - name: Verify ZIP and create checksum
+          shell: bash
+          run: |
+            set -euo pipefail
+            zip="dist/ZenStudy-Auto-Next-extension-macos-arm64.zip"
+            test -s "$zip"
+            sha256sum "$zip" > "$zip.sha256"
 
-      - name: Verify ZIP and create checksum
-        shell: bash
-        run: |
-          set -euo pipefail
-          zip="dist/ZenStudy-Auto-Next-extension-macos-arm64.zip"
-          test -s "$zip"
-          sha256sum "$zip" > "$zip.sha256"
-
-      - name: Publish release
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-        run: |
-          set -euo pipefail
-          tag="build-$GITHUB_RUN_NUMBER"
-          zip="dist/ZenStudy-Auto-Next-extension-macos-arm64.zip"
-          if gh release view "$tag" >/dev/null 2>&1; then
-            echo "Release $tag already exists; no duplicate release will be created."
-          else
-            gh release create "$tag" "$zip" "$zip.sha256" \
-              --target "$GITHUB_SHA" \
-              --title "ZenStudyAutoNext Build #$GITHUB_RUN_NUMBER" \
-              --generate-notes \
-              --notes "Automated macOS Safari extension build. This is ad-hoc signed only: no Developer ID certificate or Apple notarization. For testing, enable unsigned extensions in Safari developer settings." \
-              --prerelease
-          fi
+        - name: Publish release
+          shell: bash
+          env:
+            GH_TOKEN: ${{ github.token }}
+            GH_REPO: ${{ github.repository }}
+          run: |
+            set -euo pipefail
+            tag="build-$GITHUB_RUN_NUMBER"
+            zip="dist/ZenStudy-Auto-Next-extension-macos-arm64.zip"
+            if gh release view "$tag" >/dev/null 2>&1; then
+              echo "Release $tag already exists; no duplicate release will be created."
+            else
+              gh release create "$tag" "$zip" "$zip.sha256" \
+                --target "$GITHUB_SHA" \
+                --title "ZenStudyAutoNext Build #$GITHUB_RUN_NUMBER" \
+                --generate-notes \
+                --notes "Automated macOS Safari extension build. This is ad-hoc signed only: no Developer ID certificate or Apple notarization. For testing, enable unsigned extensions in Safari developer settings." \
+                --prerelease
+            fi
