@@ -1,13 +1,10 @@
 # ZEN Study Auto Next
 
-ZEN Study の授業動画が終了すると、左側の動画一覧から次の動画へ移動する非公式の Safari Web Extension です。
+ZEN Studyの授業動画を再生終了時に自動で次に進めてくれます。ハンズフリーで快適に授業を受講できます。
 
 ## 機能
 
 - 動画の終了イベントを検知し、設定した待ち時間後に次の動画行をクリック
-- 再生時間の表示を起点に動画行を検出
-- 確認テストなど、動画以外の行をスキップ
-- 自動遷移のオン／オフ、待ち時間、カスタム CSS セレクタの設定
 
 ## 自分の Mac でビルド
 
@@ -58,9 +55,5 @@ node --test tests/core.test.cjs
 
 ## ライセンス
 
-現時点ではライセンスは指定していません。再配布・改変の許諾条件を定めて公開する場合は、公開者が適切な LICENSE ファイルを追加してください。
+本ソフトウェアは [MIT License](LICENSE) のもとで公開しています。
 
-## Safari 開発資料
-
-- [Safari 拡張の実行](https://developer.apple.com/documentation/safariservices/running-your-safari-web-extension)
-- [Safari 拡張の配布](https://developer.apple.com/documentation/safariservices/distributing-your-safari-web-extension)
