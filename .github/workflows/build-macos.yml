@@ -1,0 +1,62 @@
+name: Build macOS Safari Extension
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build macOS app and Safari extension
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project "zenstudy-auto-next-github/ZenStudy-Auto-Next-extension.xcodeproj" \
+            -scheme "ZenStudy-Auto-Next-extension" \
+            -configuration Release \
+            -destination "generic/platform=macOS" \
+            -derivedDataPath "$RUNNER_TEMP/DerivedData" \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM="" \
+            build
+
+      - name: Package built app
+        shell: bash
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/DerivedData/Build/Products/Release/ZenStudy-Auto-Next-extension.app"
+          test -d "$APP"
+          codesign --verify --deep --strict --verbose=2 "$APP"
+          mkdir -p dist
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$APP" "dist/ZenStudy-Auto-Next-extension-macos-arm64.zip"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: ZenStudyAutoNext-macOS
+          path: dist/ZenStudy-Auto-Next-extension-macos-arm64.zip
+          if-no-files-found: error
+          retention-days: 7
+
